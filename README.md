@@ -2,7 +2,7 @@
 
 # Advent of Code 2023
 
-Welcome to my [Advent of Code](https://adventofcode.com/2022) 2023 contribution! The solutions are written in C++23 using CMake, Ninja and the MSVC compiler on Windows. When writing the solutions code I primarily aim for readability but try to always keep performance considerations in mind (thought the latter strongly depends on how much time I can spend). Happy reading!
+Welcome to my [Advent of Code](https://adventofcode.com/2023) 2023 contribution! The solutions are written in C++23 using CMake, Ninja and the MSVC compiler on Windows. When writing the solutions code I primarily aim for readability but try to always keep performance considerations in mind (thought the latter strongly depends on how much time I can spend). Happy reading!
 
 ## What is Advent of Code?
 Advent of code is made by [Eric Wastl](https://github.com/topaz).
