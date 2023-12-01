@@ -1,4 +1,4 @@
-![visitors](https://visitor-badge.glitch.me/badge?page_id=thejan14.adventofcode2023)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=thejan14.adventofcode2023)
 
 # Advent of Code 2023
 
