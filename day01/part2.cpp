@@ -69,7 +69,7 @@ int main()
 			}
 
 			last = digit;
-			it = match.suffix().first;
+			++it;
 		}
 
 		answer += first * 10 + last;
