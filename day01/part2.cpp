@@ -69,7 +69,15 @@ int main()
 			}
 
 			last = digit;
-			++it;
+			if (match.length() > 1)
+			{
+				// move the iterator to the penultimate character of the match to account for overlapping calibration values like twone (21)
+				it = match.suffix().first - 1;
+			}
+			else
+			{
+				++it;
+			}
 		}
 
 		answer += first * 10 + last;
