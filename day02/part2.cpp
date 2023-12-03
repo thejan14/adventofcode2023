@@ -7,7 +7,7 @@
 
 using std::operator""sv;
 
-struct cubeBag
+struct CubeBag
 {
 	int r, g, b;
 };
@@ -23,7 +23,7 @@ static constexpr std::optional<int> svtoi(std::string_view const& sv)
 	return std::nullopt;
 }
 
-constexpr void addMaxCubes(std::string_view const& cubeColor, int const cubeCount, cubeBag& bag)
+constexpr void addMaxCubes(std::string_view const& cubeColor, int const cubeCount, CubeBag& bag)
 {
 	if (cubeColor == "red" && bag.r < cubeCount)
 	{
@@ -43,7 +43,7 @@ constexpr void addMaxCubes(std::string_view const& cubeColor, int const cubeCoun
 
 constexpr int parseAndCalcGamePower(std::string const& setInfosToken)
 {
-	auto maxBag = cubeBag{};
+	auto maxBag = CubeBag{};
 	for (auto const setToken : std::views::split(std::string_view(setInfosToken), "; "sv))
 	{
 		for (auto const cubeToken : std::views::split(std::string_view(setToken), ", "sv))

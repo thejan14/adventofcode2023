@@ -11,7 +11,7 @@ auto constexpr MAX_R = 12;
 auto constexpr MAX_G = 13;
 auto constexpr MAX_B = 14;
 
-struct cubeBag
+struct CubeBag
 {
 	int r, g, b;
 };
@@ -27,7 +27,7 @@ static constexpr std::optional<int> svtoi(std::string_view const& sv)
 	return std::nullopt;
 }
 
-constexpr bool tryAddCubes(std::string_view const& cubeColor, int const cubeCount, cubeBag& bag)
+constexpr bool tryAddCubes(std::string_view const& cubeColor, int const cubeCount, CubeBag& bag)
 {
 	if (cubeColor == "red")
 	{
@@ -54,7 +54,7 @@ bool parseAndCheckGame(std::string const& setInfosToken)
 {
 	for (auto const setToken : std::views::split(std::string_view(setInfosToken), "; "sv))
 	{
-		auto bag = cubeBag{};
+		auto bag = CubeBag{};
 		for (auto const cubeToken : std::views::split(std::string_view(setToken), ", "sv))
 		{
 			auto const cubeTokenSv = std::string_view(cubeToken);
