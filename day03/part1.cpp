@@ -4,19 +4,13 @@
 #include <string>
 #include <chrono>
 #include <format>
-#include <map>
 #include <ranges>
 
 constexpr int DIM = 140;
 
-struct NumberPos
+struct NumberInfo
 {
-    int i, j1, j2;
-
-    bool operator<(NumberPos const& pos) const
-    {
-        return std::make_tuple(this->i, this->j1, this->j2) < std::make_tuple(pos.i, pos.j1, pos.j2);
-    }
+    int i, j1, j2, n;
 };
 
 constexpr int getPos(int const i, int const j)
@@ -34,12 +28,12 @@ constexpr bool isSymbol(char const* c)
     return *c != '.' && *c != '\n' && !isNumber(c);
 }
 
-constexpr bool hasAdjacentSymbol(std::string const& input, NumberPos const& pos)
+constexpr bool hasAdjacentSymbol(std::string const& input, NumberInfo const& info)
 {
     // check rows above and below the number
-    for (auto const i : std::array{ pos.i - 1, pos.i + 1 })
+    for (auto const i : std::array{ info.i - 1, info.i + 1 })
     {
-        for (int j = pos.j1 - 1; j < pos.j2 + 2; j++)
+        for (int j = info.j1 - 1; j < info.j2 + 2; j++)
         {
             if (auto const index = getPos(i, j); index > -1 && index < input.length() && isSymbol(&input[index]))
             {
@@ -49,9 +43,9 @@ constexpr bool hasAdjacentSymbol(std::string const& input, NumberPos const& pos)
     }
 
     // check leading and trailing character of the number
-    for (auto const j : std::array{ pos.j1 - 1, pos.j2 + 1 })
+    for (auto const j : std::array{ info.j1 - 1, info.j2 + 1 })
     {
-        if (auto const index = getPos(pos.i, j); index > 0 && index < input.length() && isSymbol(&input[index]))
+        if (auto const index = getPos(info.i, j); index > 0 && index < input.length() && isSymbol(&input[index]))
         {
             return true;
         }
@@ -77,7 +71,7 @@ int main()
 
     /* begin solution */
 
-    auto numbers = std::map<NumberPos, int>{};
+    auto numbers = std::vector<NumberInfo>{};
 
     for (int i = 0; i < DIM; i++)
     {
@@ -85,7 +79,7 @@ int main()
         {
             if (auto const first = &input[getPos(i, j)]; isNumber(first))
             {
-                auto currentNumber = NumberPos{ i, j, j };
+                auto& currentNumber = numbers.emplace_back(i, j, j);
                 while (isNumber(&input[getPos(i, ++j)]))
                 {
                     ++currentNumber.j2;
@@ -94,20 +88,20 @@ int main()
                 auto const last = &input[getPos(i, j)];
 
                 int parsedNumber;
-                auto [ptr, ec] = std::from_chars(first, last, parsedNumber);
+                auto [ptr, _] = std::from_chars(first, last, parsedNumber);
                 assert(ptr == last);
 
-                numbers[currentNumber] = parsedNumber;
+                currentNumber.n = parsedNumber;
             }
         }
     }
 
     auto answer = 0;
-    for (auto const& [pos, number] : numbers)
+    for (auto const& info : numbers)
     {
-        if (hasAdjacentSymbol(input, pos))
+        if (hasAdjacentSymbol(input, info))
         {
-            answer += number;
+            answer += info.n;
         }
     }
 
