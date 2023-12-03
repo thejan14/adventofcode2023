@@ -19,3 +19,18 @@ For running the code you need [Visual Studio 2022](https://visualstudio.microsof
 Right click the target you want to run and choose "Debug":
 
 ![Screenshot 2023-12-02 132742](https://github.com/thejan14/adventofcode2023/assets/7323693/e78ab986-b5ef-4298-82d4-9985355949a4)
+
+You can also compile and run the code on Linux. Make sure you have the latest version of [CMake](https://cmake.org/) and [gcc](https://gcc.gnu.org/) installed (tested with CMake 3.27.7 and gcc 13.1.0). Note that gcc must be installed to `/usr/bin/gcc`. Then run the following command in the repository folder:
+```
+cmake -B./out/build --preset="x64-debug-linux" .
+```
+
+This will prepare your build files. To build the C++ code run:
+```
+cmake --build ".\out\build"
+``` 
+
+Now you can run the solutions by navigating to the respective build folder:
+```
+(cd ./out/build/dayXX/ && ./dayXXpartY)
+```

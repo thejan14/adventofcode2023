@@ -18,6 +18,22 @@
             }
         },
         {
+            "name": "linux-base",
+            "hidden": true,
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "installDir": "${sourceDir}/out/install/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
+            },
+            "condition": {
+                "type": "notEquals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
             "name": "x64-debug",
             "displayName": "x64 Debug",
             "inherits": "windows-base",
@@ -38,11 +54,11 @@
             }
         },
         {
-            "name": "x86-debug",
-            "displayName": "x86 Debug",
-            "inherits": "windows-base",
+            "name": "x64-debug-linux",
+            "displayName": "x64 Debug Linux",
+            "inherits": "linux-base",
             "architecture": {
-                "value": "x86",
+                "value": "x64",
                 "strategy": "external"
             },
             "cacheVariables": {
@@ -50,9 +66,9 @@
             }
         },
         {
-            "name": "x86-release",
-            "displayName": "x86 Release",
-            "inherits": "x86-debug",
+            "name": "x64-release-linux",
+            "displayName": "x64 Release Linux",
+            "inherits": "x64-debug-linux",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
