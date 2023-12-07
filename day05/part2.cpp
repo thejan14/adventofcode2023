@@ -158,6 +158,6 @@ int main()
     /* end solution */
 
     const auto execEnd = std::chrono::high_resolution_clock::now();
-    const auto millis = std::chrono::duration_cast<std::chrono::microseconds> (execEnd - execStart);
+    const auto millis = std::chrono::duration_cast<std::chrono::milliseconds> (execEnd - execStart);
     std::cout << std::format("{} ({})", answer, millis);
 }
