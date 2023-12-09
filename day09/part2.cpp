@@ -6,9 +6,6 @@
 #include <format>
 #include <ranges>
 
-using std::operator""sv;
-
-
 static long long svtoll(std::string_view const& sv)
 {
     long long value;
