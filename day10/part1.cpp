@@ -24,7 +24,7 @@ inline std::pair<int, int> getPos(int const index)
     return { index / (DIM + 1), index % (DIM + 1) };
 }
 
-std::pair<int, Direction> traverse(std::string const& input, int const current, Direction from)
+std::pair<int, Direction> traverse(std::string const& input, int const current, Direction const from)
 {
     auto const [i, j] = getPos(current);
     switch (input[current])
@@ -51,7 +51,7 @@ std::pair<int, Direction> traverse(std::string const& input, int const current, 
     }
 }
 
-std::pair<char, Direction> getStartPipe(std::string const& input, int start)
+std::pair<char, Direction> getStartPipe(std::string const& input, int const start)
 {
     auto const [si, sj] = getPos(start);
     auto const north = std::ranges::contains(validN, input[getIndex(si - 1, sj)]);
@@ -86,7 +86,7 @@ int main()
 
     /* begin solution */
 
-    auto const startIndex = input.find('S');
+    auto const startIndex = static_cast<int>(input.find('S'));
     auto const [pipe, startDirection] = getStartPipe(input, startIndex);
     input[startIndex] = pipe;
 

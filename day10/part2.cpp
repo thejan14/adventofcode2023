@@ -24,7 +24,7 @@ inline std::pair<int, int> getPos(int const index)
     return { index / (DIM + 1), index % (DIM + 1) };
 }
 
-std::pair<int, Direction> traverse(std::string const& input, int const current, Direction from)
+std::pair<int, Direction> traverse(std::string const& input, int const current, Direction const from)
 {
     auto const [i, j] = getPos(current);
     switch (input[current])
@@ -51,7 +51,7 @@ std::pair<int, Direction> traverse(std::string const& input, int const current, 
     }
 }
 
-std::pair<char, Direction> getStartPipe(std::string const& input, int start)
+std::pair<char, Direction> getStartPipe(std::string const& input, int const start)
 {
     auto const [si, sj] = getPos(start);
     auto const north = std::ranges::contains(validN, input[getIndex(si - 1, sj)]);
@@ -69,8 +69,9 @@ std::pair<char, Direction> getStartPipe(std::string const& input, int start)
     throw std::invalid_argument("start position cannot be a pipe");
 }
 
-char getIntersectionChar(Direction const from, Direction const to)
+char getIntersection(Direction const from, Direction const to)
 {
+    // Prepare input for nonzero-rule computation
     if (from == N)
     {
         return 'N';
@@ -101,45 +102,31 @@ int main()
 
     /* begin solution */
 
-    auto const startIndex = input.find('S');
+    auto const startIndex = static_cast<int>(input.find('S'));
     auto const [pipe, startDirection] = getStartPipe(input, startIndex);
     input[startIndex] = pipe;
 
-    auto [currentIndex, currentDirection] = traverse(input, startIndex, startDirection);
-    while (currentIndex != startIndex)
+    auto currentIndex = startIndex;
+    auto currentDirection = startDirection;
+    do
     {
         auto const [newIndex, newDirection] = traverse(input, currentIndex, currentDirection);
-        input[currentIndex] = getIntersectionChar(currentDirection, newDirection);
+        input[currentIndex] = getIntersection(currentDirection, newDirection);
         currentIndex = newIndex;
         currentDirection = newDirection;
     }
-
-    auto const [newIndex, newDirection] = traverse(input, currentIndex, currentDirection);
-    input[currentIndex] = getIntersectionChar(currentDirection, newDirection);
+    while (currentIndex != startIndex);
 
     // https://en.wikipedia.org/wiki/Nonzero-rule
     auto answer = 0;
-    for (auto line = 0; line < DIM; line++)
+    auto windings = 0;
+    for (auto const current : input)
     {
-        auto windings = 0;
-        auto const limit = line * (DIM + 1) + DIM;
-        for (auto current = line * (DIM + 1); current < limit; current++)
+        switch (current)
         {
-            if (input[current] == 'N')
-            {
-                --windings;
-            }
-            else if (input[current] == 'S')
-            {
-                ++windings;
-            }
-            else if (input[current] != 'X')
-            {
-                if (windings != 0)
-                {
-                    ++answer;
-                }
-            }
+            case 'N': --windings; break;
+            case 'S': ++windings; break;
+            default: if (current != 'X' && windings != 0) ++answer;
         }
     }
 
