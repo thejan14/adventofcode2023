@@ -1,11 +1,12 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <map>
 #include <ranges>
 #include <regex>
+
+#include "aoc.h"
 
 using std::operator""sv;
 using llong = long long;
@@ -86,17 +87,7 @@ void addMapped(std::vector<std::pair<llong, llong>>& newDestinations, llong newD
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */

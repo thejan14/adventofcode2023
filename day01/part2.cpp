@@ -1,10 +1,11 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <map>
 #include <regex>
+
+#include "aoc.h"
 
 const std::regex numbersRegex = std::regex(R"((\d|zero|one|two|three|four|five|six|seven|eight|nine))");
 
@@ -35,17 +36,7 @@ inline int getNumber(std::string const& numberStr)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */

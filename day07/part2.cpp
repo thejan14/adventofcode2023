@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
@@ -7,6 +6,8 @@
 #include <map>
 #include <ranges>
 #include <set>
+
+#include "aoc.h"
 
 enum Tier
 {
@@ -65,17 +66,7 @@ inline Tier getHandTier(size_t const unique, int const maxSame, int const joker)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */

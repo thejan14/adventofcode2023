@@ -1,9 +1,10 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <ranges>
+
+#include "aoc.h"
 
 template <typename T>
 auto split(T const& str, std::string const& sep)
@@ -67,24 +68,13 @@ size_t processPattern(std::string_view const& pattern)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */
 
     auto answer = 0ULL;
-    auto const sanitized = input.substr(0, input.length() - 1);
-    for (auto const pattern : split(sanitized, "\n\n"))
+    for (auto const pattern : split(input, "\n\n"))
     {
         answer += processPattern(pattern);
     }

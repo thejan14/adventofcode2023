@@ -1,10 +1,11 @@
 ﻿#include <algorithm>
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <ranges>
+
+#include "aoc.h"
 
 static long long svtoll(std::string_view const& sv)
 {
@@ -51,26 +52,14 @@ long long extrapolateSequence(std::vector<long long>& sequence)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */
 
     auto answer = 0LL;
 
-    // remove trailing newline from input
-    auto const sanitized = std::string_view(input).substr(0, input.size() - 1);
-    for (auto const line : split(sanitized, '\n'))
+    for (auto const line : split(input, '\n'))
     {
         auto sequence = split(line, ' ')
             | std::views::transform([](auto const t) { return svtoll(t); })

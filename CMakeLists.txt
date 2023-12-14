@@ -3,7 +3,12 @@
 #
 cmake_minimum_required (VERSION 3.27)
 
-project ("adventofcode2023")
+project ("adventofcode2023" LANGUAGES CXX)
+
+add_library(aoc INTERFACE)
+set_target_properties(aoc PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_features(aoc INTERFACE cxx_std_23)
+target_include_directories(aoc INTERFACE "lib")
 
 # Include sub-projects.
 add_subdirectory ("day01")

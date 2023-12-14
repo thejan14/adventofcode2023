@@ -1,9 +1,10 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <ranges>
+
+#include "aoc.h"
 
 template <typename T>
 auto split(T const& str, char sep)
@@ -22,23 +23,12 @@ std::string getColumn(std::vector<std::string>& rows, size_t const column)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */
 
-    auto const sanitized = input.substr(0, input.size() - 1);
-    auto rows = split(sanitized, '\n')
+    auto rows = split(input, '\n')
         | std::views::transform([](auto const row) { return std::string(row); })
         | std::ranges::to<std::vector>();
     auto columns = std::views::iota(0, static_cast<int>(rows.size()))

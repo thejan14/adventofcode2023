@@ -1,10 +1,11 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <ranges>
 #include <map>
+
+#include "aoc.h"
 
 constexpr auto CYCLES = 1'000'000'000ULL;
 
@@ -85,25 +86,13 @@ size_t getLoad(std::vector<std::vector<char*>> const& view)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */
 
-    auto state = input.substr(0, input.size() - 1);
-
     // rows from left to right
-    auto westView = split(state, '\n');
+    auto westView = split(input, '\n');
 
     // rows from right to left
     auto eastView = westView
@@ -127,9 +116,9 @@ int main()
         tilt(westView);
         tilt(southView);
         tilt(eastView);
-        if (auto const it = states.find(state); it == states.end())
+        if (auto const it = states.find(input); it == states.end())
         {
-            states.emplace(state, i);
+            states.emplace(input, i);
         }
         else
         {

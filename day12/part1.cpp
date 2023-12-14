@@ -1,9 +1,10 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <ranges>
+
+#include "aoc.h"
 
 struct ConditionRecord
 {
@@ -90,24 +91,13 @@ int getArrangements(ConditionRecord const& record, size_t const rp, size_t const
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */
 
     auto records = std::vector<ConditionRecord>{};
-    auto const sanitized = input.substr(0, input.size() - 1);
-    for (auto const line : split(sanitized, '\n'))
+    for (auto const line : split(input, '\n'))
     {
         auto const sep = line.find(' ');
         auto const row = line.substr(0, sep);

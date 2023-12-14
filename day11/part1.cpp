@@ -1,11 +1,11 @@
 ﻿#include <algorithm>
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <chrono>
 #include <format>
 #include <array>
-#include <ranges>
+
+#include "aoc.h"
 
 /* thanks to the reddit solutions thread for inspirations on improving my solution, especially u/endl */
 
@@ -25,17 +25,7 @@ long long getDistance(pos const& galaxy1, pos  const& galaxy2)
 
 int main()
 {
-    std::string input;
-    if (auto readStream = std::ifstream("input.txt"); readStream.is_open())
-    {
-        std::string line;
-        while (getline(readStream, line))
-        {
-            input += line;
-            input.push_back('\n');
-        }
-    }
-
+    auto input = aoc::readInput();
     const auto execStart = std::chrono::high_resolution_clock::now();
 
     /* begin solution */
