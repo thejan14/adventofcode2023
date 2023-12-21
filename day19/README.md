@@ -1,90 +1,74 @@
-# Day 18: Lavaduct Lagoon
+# Day 19: Aplenty
 
-[https://adventofcode.com/2023/day/18](https://adventofcode.com/2023/day/18)
+[https://adventofcode.com/2023/day/19](https://adventofcode.com/2023/day/19)
 
 ## Description
 
 ### Part One
 
-Thanks to your efforts, the machine parts factory is one of the first factories up and running since the lavafall came back. However, to catch up with the large backlog of parts requests, the factory will also need a _large supply of lava_ for a while; the Elves have already started creating a large lagoon nearby for this purpose.
+The Elves of Gear Island are thankful for your help and send you on your way. They even have a hang glider that someone [stole](https://adventofcode.com/2023/day/9) from Desert Island; since you're already going that direction, it would help them a lot if you would use it to get down there and return it to them.
 
-However, they aren't sure the lagoon will be big enough; they've asked you to take a look at the _dig plan_ (your puzzle input). For example:
+As you reach the bottom of the _relentless avalanche of machine parts_, you discover that they're already forming a formidable heap. Don't worry, though - a group of Elves is already here organizing the parts, and they have a <span title="This part sparks joy. This part sparks joy. This part ALSO sparks joy... I think we need a different system."><em>system</em></span>.
 
-    R 6 (#70c710)
-    D 5 (#0dc571)
-    L 2 (#5713f0)
-    D 2 (#d2c081)
-    R 2 (#59c680)
-    D 2 (#411b91)
-    L 5 (#8ceee2)
-    U 2 (#caa173)
-    L 1 (#1b58a2)
-    U 2 (#caa171)
-    R 2 (#7807d2)
-    U 3 (#a77fa3)
-    L 2 (#015232)
-    U 2 (#7a21e3)
+To start, each part is rated in each of four categories:
+
+*   `x`: E_x_tremely cool looking
+*   `m`: _M_usical (it makes a noise when you hit it)
+*   `a`: _A_erodynamic
+*   `s`: _S_hiny
+
+Then, each part is sent through a series of _workflows_ that will ultimately _accept_ or _reject_ the part. Each workflow has a name and contains a list of _rules_; each rule specifies a condition and where to send the part if the condition is true. The first rule that matches the part being considered is applied immediately, and the part moves on to the destination described by the rule. (The last rule in each workflow has no condition and always applies if reached.)
+
+Consider the workflow `ex{x>10:one,m<20:two,a>30:R,A}`. This workflow is named `ex` and contains four rules. If workflow `ex` were considering a specific part, it would perform the following steps in order:
+
+*   Rule "`x>10:one`": If the part's `x` is more than `10`, send the part to the workflow named `one`.
+*   Rule "`m<20:two`": Otherwise, if the part's `m` is less than `20`, send the part to the workflow named `two`.
+*   Rule "`a>30:R`": Otherwise, if the part's `a` is more than `30`, the part is immediately _rejected_ (`R`).
+*   Rule "`A`": Otherwise, because no other rules matched the part, the part is immediately _accepted_ (`A`).
+
+If a part is sent to another workflow, it immediately switches to the start of that workflow instead and never returns. If a part is _accepted_ (sent to `A`) or _rejected_ (sent to `R`), the part immediately stops any further processing.
+
+The system works, but it's not keeping up with the torrent of weird metal shapes. The Elves ask if you can help sort a few parts and give you the list of workflows and some part ratings (your puzzle input). For example:
+
+    px{a<2006:qkq,m>2090:A,rfg}
+    pv{a>1716:R,A}
+    lnx{m>1548:A,A}
+    rfg{s<537:gd,x>2440:R,A}
+    qs{s>3448:A,lnx}
+    qkq{x<1416:A,crn}
+    crn{x>2662:A,R}
+    in{s<1351:px,qqz}
+    qqz{s>2770:qs,m<1801:hdj,R}
+    gd{a>3333:R,R}
+    hdj{m>838:A,pv}
+    
+    {x=787,m=2655,a=1222,s=2876}
+    {x=1679,m=44,a=2067,s=496}
+    {x=2036,m=264,a=79,s=2244}
+    {x=2461,m=1339,a=466,s=291}
+    {x=2127,m=1623,a=2188,s=1013}
     
 
-The digger starts in a 1 meter cube hole in the ground. They then dig the specified number of meters _up_ (`U`), _down_ (`D`), _left_ (`L`), or _right_ (`R`), clearing full 1 meter cubes as they go. The directions are given as seen from above, so if "up" were north, then "right" would be east, and so on. Each trench is also listed with _the color that the edge of the trench should be painted_ as an [RGB hexadecimal color code](https://en.wikipedia.org/wiki/RGB_color_model#Numeric_representations).
+The workflows are listed first, followed by a blank line, then the ratings of the parts the Elves would like you to sort. All parts begin in the workflow named `in`. In this example, the five listed parts go through the following workflows:
 
-When viewed from above, the above example dig plan would result in the following loop of _trench_ (`#`) having been dug out from otherwise _ground-level terrain_ (`.`):
+*   `{x=787,m=2655,a=1222,s=2876}`: `in` -> `qqz` -> `qs` -> `lnx` -> _`A`_
+*   `{x=1679,m=44,a=2067,s=496}`: `in` -> `px` -> `rfg` -> `gd` -> _`R`_
+*   `{x=2036,m=264,a=79,s=2244}`: `in` -> `qqz` -> `hdj` -> `pv` -> _`A`_
+*   `{x=2461,m=1339,a=466,s=291}`: `in` -> `px` -> `qkq` -> `crn` -> _`R`_
+*   `{x=2127,m=1623,a=2188,s=1013}`: `in` -> `px` -> `rfg` -> _`A`_
 
-    #######
-    #.....#
-    ###...#
-    ..#...#
-    ..#...#
-    ###.###
-    #...#..
-    ##..###
-    .#....#
-    .######
-    
+Ultimately, three parts are _accepted_. Adding up the `x`, `m`, `a`, and `s` rating for each of the accepted parts gives `7540` for the part with `x=787`, `4623` for the part with `x=2036`, and `6951` for the part with `x=2127`. Adding all of the ratings for _all_ of the accepted parts gives the sum total of _`19114`_.
 
-At this point, the trench could contain 38 cubic meters of lava. However, this is just the edge of the lagoon; the next step is to _dig out the interior_ so that it is one meter deep as well:
-
-    #######
-    #######
-    #######
-    ..#####
-    ..#####
-    #######
-    #####..
-    #######
-    .######
-    .######
-    
-
-Now, the lagoon can contain a much more respectable _`62`_ cubic meters of lava. While the interior is dug out, the edges are also painted according to the color codes in the dig plan.
-
-The Elves are concerned the lagoon won't be large enough; if they follow their dig plan, _how many cubic meters of lava could it hold?_
+Sort through all of the parts you've been given; _what do you get if you add together all of the rating numbers for all of the parts that ultimately get accepted?_
 
 ### Part Two
 
-The Elves were right to be concerned; the planned lagoon would be _much too small_.
+Even with your help, the sorting process _still_ isn't fast enough.
 
-After a few minutes, someone realizes what happened; someone _<span title="Futuristic sprintf()?">swapped</span> the color and instruction parameters_ when producing the dig plan. They don't have time to fix the bug; one of them asks if you can _extract the correct instructions_ from the hexadecimal codes.
+One of the Elves comes up with a new plan: rather than sort parts individually through all of these workflows, maybe you can figure out in advance which combinations of ratings will be accepted or rejected.
 
-Each hexadecimal code is _six hexadecimal digits_ long. The first five hexadecimal digits encode the _distance in meters_ as a five-digit hexadecimal number. The last hexadecimal digit encodes the _direction to dig_: `0` means `R`, `1` means `D`, `2` means `L`, and `3` means `U`.
+Each of the four ratings (`x`, `m`, `a`, `s`) can have an integer value ranging from a minimum of `1` to a maximum of `4000`. Of _all possible distinct combinations_ of ratings, your job is to figure out which ones will be _accepted_.
 
-So, in the above example, the hexadecimal codes can be converted into the true instructions:
+In the above example, there are _`167409079868000`_ distinct combinations of ratings that will be accepted.
 
-*   `#70c710` = `R 461937`
-*   `#0dc571` = `D 56407`
-*   `#5713f0` = `R 356671`
-*   `#d2c081` = `D 863240`
-*   `#59c680` = `R 367720`
-*   `#411b91` = `D 266681`
-*   `#8ceee2` = `L 577262`
-*   `#caa173` = `U 829975`
-*   `#1b58a2` = `L 112010`
-*   `#caa171` = `D 829975`
-*   `#7807d2` = `L 491645`
-*   `#a77fa3` = `U 686074`
-*   `#015232` = `L 5411`
-*   `#7a21e3` = `U 500254`
-
-Digging out this loop and its interior produces a lagoon that can hold an impressive _`952408144115`_ cubic meters of lava.
-
-Convert the hexadecimal color codes into the correct instructions; if the Elves follow this new dig plan, _how many cubic meters of lava could the lagoon hold?_
+Consider only your list of workflows; the list of part ratings that the Elves wanted you to sort is no longer relevant. _How many distinct combinations of ratings will be accepted by the Elves' workflows?_
